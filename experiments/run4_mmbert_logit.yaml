@@ -1,0 +1,35 @@
+# Run 4/4 - mmBERT-base teacher, relation distillation + output-logit KD.
+# Identical to run 3 plus logit-KD. NOTE: mmBERT's 256k vocab makes the
+# per-token logit distribution large (B x S x 256k), so the batch is reduced
+# and accumulation raised to keep the same effective batch (256) within memory.
+name: run4_mmbert_logit
+teacher: jhu-clsp/mmBERT-base
+student_architecture: jhu-clsp/mmBERT-base
+output: ./models/run4_mmbert_logit
+
+data:
+  dataset: HuggingFaceFW/fineweb-2
+  config: deu_Latn
+  max_seq_len: 512
+  pack: true
+
+student:
+  hidden: 384
+  layers: 6
+  heads: 6
+  L: 19
+  A_r: 16
+
+loss:
+  relations: "{(1,1):1,(2,2):1,(3,3):1}"
+  logit_kd_weight: 1.0                       # + MLM-logit KD over the 256k vocab
+  logit_kd_temperature: 2.0
+
+training:
+  batch: 16                                  # smaller: 256k-vocab logits are memory-heavy
+  grad_accum: 16                             # effective batch 256
+  max_steps: 15000
+  lr: 6e-4
+  warmup: 1500
+  save_steps: 2500
+  compile: true

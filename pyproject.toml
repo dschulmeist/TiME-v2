@@ -1,0 +1,41 @@
+[project]
+name = "time-distillation"
+version = "0.1.0"
+description = "TiME: Tiny Monolingual Encoders - MiniLMv2 distillation and evaluation"
+requires-python = ">=3.12"
+dependencies = [
+    "torch>=2.6",
+    # >=5.x keeps ModernBERT batches padded (full-model unpadding was removed
+    # in the 5.1 release), which the (B, S, H) Q/K/V hook contract relies on.
+    "transformers>=5.11,<6",
+    "datasets",
+    "accelerate>=0.28.0",
+    "python-dotenv",
+    "bitsandbytes>=0.43; sys_platform == 'linux'",
+]
+
+[project.optional-dependencies]
+# Downstream benchmark suite (text-cls / NER / UD). Install with:
+#   uv sync --extra eval
+eval = [
+    "evaluate",
+    "seqeval",
+    "scikit-learn",
+    "conllu",
+    "ufal.chu-liu-edmonds>=0.9.1",
+    "smart_open",
+    "numpyencoder",
+    "wandb",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

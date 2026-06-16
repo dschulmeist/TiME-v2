@@ -1,0 +1,32 @@
+# Run 3/4 - multilingual mmBERT-base teacher, relation distillation only.
+# Same German student size as runs 1/2, but distilled from a multilingual
+# teacher (256k vocab) to test cross-distribution transfer into German.
+name: run3_mmbert_relation
+teacher: jhu-clsp/mmBERT-base                # multilingual ModernBERT, 22L/768H, 256k vocab, no GQA
+student_architecture: jhu-clsp/mmBERT-base
+output: ./models/run3_mmbert_relation
+
+data:
+  dataset: HuggingFaceFW/fineweb-2
+  config: deu_Latn
+  max_seq_len: 512
+  pack: true
+
+student:
+  hidden: 384
+  layers: 6
+  heads: 6
+  L: 19                                      # mmBERT global layers: 1,4,...,22 -> upper global = 19
+  A_r: 16                                    # divides 768 (teacher) and 384 (student)
+
+loss:
+  relations: "{(1,1):1,(2,2):1,(3,3):1}"
+
+training:
+  batch: 64
+  grad_accum: 4
+  max_steps: 15000
+  lr: 6e-4
+  warmup: 1500
+  save_steps: 2500
+  compile: true

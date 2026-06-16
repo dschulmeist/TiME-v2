@@ -1,0 +1,10 @@
+# Standalone deps for the spaCy / energy GPU benchmarks (CUDA-specific,
+# e.g. cupy-cuda12x) - kept out of the cross-platform uv lock on purpose.
+# Install into a separate venv: pip install -r requirements.txt
+
+spacy>=3.7,<4.0
+spacy-transformers
+conllu
+torch
+datasets
+cupy-cuda12x
