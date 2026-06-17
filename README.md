@@ -126,7 +126,7 @@ is all the setup needed.
     bash scripts/run_distillation.sh
     ```
 
--   **mmBERT-base -> xs recipe (pruned vocab, pack + compile):**
+-   **multilingual-modern-BERT-base -> xs recipe (pruned vocab, pack + compile):**
     ```bash
     bash scripts/run_distillation.sh \
       --teacher jhu-clsp/mmBERT-base \
