@@ -240,7 +240,7 @@ The `ner_eval.sh` script handles evaluation on the WikiAnn dataset for NER.
     bash evaluation/nlp_eval/ner/ner_eval.sh wikiann/de ./models/german_moderngbert/student/checkpoint-6000
     ```
 
-## Results
+## Results (small German modernBERT tests)
 
 A small German study used this pipeline to distill compact 6-layer ModernBERT
 students from two teachers (ModernGBERT-1B and multilingual mmBERT-base) with
